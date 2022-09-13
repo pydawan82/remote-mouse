@@ -5,11 +5,10 @@ import java.util.List;
 import com.pydawan.jni.WindowLib;
 import com.pydawan.vk.VirtualKey;
 import com.pydawan.vk.VirtualKeyboard;
+import com.pydawan.winuser.Monitor;
 import com.pydawan.winuser.Window;
 import com.sun.jna.ptr.PointerByReference;
 
-import com.sun.jna.Library;
-import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
 import com.sun.jna.platform.win32.WinDef.LPARAM;
@@ -26,7 +25,8 @@ public class App {
     public static void main(String[] args) throws Exception {
         System.out.println(Window.foreground());
         List<Window> windows = Window.collect(Window::isMainWindow);
-        // VirtualKeyboard.pressKeyCombo(VirtualKey.LWIN, VirtualKey.D);
-        VirtualKeyboard.pressKeys(VirtualKey.A, VirtualKey.B);
+        List<Monitor> monitors = Monitor.all();
+        windows.get(1).maximizeTo(monitors.get(2));
+        VirtualKeyboard.pressKeys(VirtualKey.F, VirtualKey.SPACE);
     }
 }

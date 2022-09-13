@@ -26,9 +26,13 @@ public interface WindowLib extends Library {
 
     boolean IsWindowVisible(HWND hWnd);
 
+    boolean MoveWindow(HWND hWnd, int X, int Y, int nWidth, int nHeight, boolean bRepaint);
+
     boolean PostMessageW(HWND hWnd, int Msg, WPARAM wParam, LPARAM lParam);
 
     boolean SetForegroundWindow(HWND hWnd);
+
+    boolean SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy, int uFlags);
 
     boolean ShowWindow(HWND hWnd, int nCmdShow);
 }
