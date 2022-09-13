@@ -6,7 +6,7 @@ LIBS = user32.lib
 LIBS := $(addprefix $(LIB_DIR), $(LIBS))
 
 SRC_DIR = src\\
-SRC = main.cpp mouse.cpp window.cpp
+SRC = main.cpp mouse.cpp window.cpp keyboard.cpp
 SRC := $(addprefix $(SRC_DIR), $(SRC))
 
 HEADER_DIR = headers

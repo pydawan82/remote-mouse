@@ -6,6 +6,7 @@
 
 #include "mouse.hpp"
 #include "window.hpp"
+#include "keyboard.hpp"
 
 void printDebug(std::vector<HWND> windows, std::vector<MONITORINFOEX> monitors)
 {
@@ -26,10 +27,20 @@ void printDebug(std::vector<HWND> windows, std::vector<MONITORINFOEX> monitors)
 
 int main(int argc, char *args[])
 {
-    std::vector<HWND> windows = window::getWindows();
-    std::vector<MONITORINFOEX> monitors = window::getMonitors();
+    keyboard::tap('A');
 
-    mouse::move(20, 20);
+    INPUT inputs[4] = {0};
+    inputs[0].type = INPUT_KEYBOARD;
+    inputs[0].ki.wVk = VK_LWIN;
+    inputs[1].type = INPUT_KEYBOARD;
+    inputs[1].ki.wVk = 'D';
+    inputs[2].type = INPUT_KEYBOARD;
+    inputs[2].ki.wVk = 'D';
+    inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+    inputs[3].type = INPUT_KEYBOARD;
+    inputs[3].ki.wVk = VK_LWIN;
+    inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+    SendInput(4, inputs, sizeof(INPUT));
 
     return 0;
 }
