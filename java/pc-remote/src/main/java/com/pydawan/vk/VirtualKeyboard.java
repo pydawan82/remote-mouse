@@ -24,7 +24,7 @@ public class VirtualKeyboard {
         input.input.ki.wVk.setValue(key.getValue());
     }
 
-    private static void setUpKeyInput(@NonNull INPUT input, @NonNull VirtualKey key) {
+    private static void setUpKeyInput(INPUT input, VirtualKey key) {
         input.input.setType(KEYBDINPUT.class);
         input.type.setValue(INPUT.INPUT_KEYBOARD);
         input.input.ki.wVk.setValue(key.getValue());
@@ -74,7 +74,7 @@ public class VirtualKeyboard {
             throw new WindowsException();
     }
 
-    public static void pressKeyCombo(@NonNull VirtualKey... keys) {
+    public static void pressKeyCombo(VirtualKey... keys) {
         if (keys.length == 0)
             return;
 
