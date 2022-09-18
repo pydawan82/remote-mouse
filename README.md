@@ -25,9 +25,9 @@ Java interface
 	- Application specific (tbd)
 	
 ### Supported OS
-✅ Windows (partially)
-🔲 MacOS
-🔲 Linux
++ ✅ Windows (partially)
++ 🔲 MacOS
++ 🔲 Linux
 
 REST API
 --------
