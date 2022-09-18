@@ -1,4 +1,4 @@
-package com.pydawan.remote_mouse.winuser;
+package com.pydawan.remote_mouse.window.windows;
 
 public class WindowStyles {
         public static final int WS_BORDER = 0x00800000;

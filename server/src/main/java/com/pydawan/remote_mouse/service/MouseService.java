@@ -1,10 +1,8 @@
 package com.pydawan.remote_mouse.service;
 
-import javax.websocket.server.ServerEndpoint;
-
 import org.springframework.stereotype.Service;
 
-import com.pydawan.mouse.Mouse;
+import com.pydawan.remote_mouse.mouse.Mouse;
 
 @Service
 public class MouseService {

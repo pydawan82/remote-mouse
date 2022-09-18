@@ -1,4 +1,4 @@
-package com.pydawan.remote_mouse.winuser;
+package com.pydawan.remote_mouse.window.windows;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,11 @@ import java.util.function.Predicate;
 import lombok.Getter;
 
 import com.pydawan.remote_mouse.exception.WindowsException;
-import com.pydawan.remote_mouse.jni.WindowLib;
+import com.pydawan.remote_mouse.jni.windows.WindowLib;
+import com.pydawan.remote_mouse.monitor.Monitor;
+import com.pydawan.remote_mouse.util.Rect;
 import com.pydawan.remote_mouse.vk.VirtualKey;
+import com.pydawan.remote_mouse.window.Window;
 import com.sun.jna.Pointer;
 
 import com.sun.jna.platform.win32.WinDef.LPARAM;
@@ -19,17 +22,21 @@ import com.sun.jna.platform.win32.WinDef.RECT;
 import com.sun.jna.platform.win32.WinUser.WNDENUMPROC;
 import com.sun.jna.platform.win32.WinUser.WINDOWINFO;
 
-public class Window {
+public class WindowsWindow implements Window {
 
     @Getter
     private HWND hWnd;
 
-    protected Window(HWND hWnd) {
+    private static Rect toRect(RECT rect) {
+        return new Rect(rect.left, rect.top, rect.right, rect.bottom);
+    }
+
+    protected WindowsWindow(HWND hWnd) {
         this.hWnd = hWnd;
     }
 
-    public static Window foreground() {
-        return new Window(WindowLib.INSTANCE.GetForegroundWindow());
+    public static WindowsWindow foreground() {
+        return new WindowsWindow(WindowLib.INSTANCE.GetForegroundWindow());
     }
 
     /**
@@ -39,10 +46,10 @@ public class Window {
      * @param predicate The predicate to test each window with.
      * @
      */
-    public static void enumerate(Predicate<Window> predicate) {
+    public static void enumerate(Predicate<? super WindowsWindow> predicate) {
         WNDENUMPROC fn = new WNDENUMPROC() {
             public boolean callback(HWND hWnd, Pointer arg1) {
-                return predicate.test(new Window(hWnd));
+                return predicate.test(new WindowsWindow(hWnd));
             }
         };
 
@@ -51,8 +58,8 @@ public class Window {
             throw new WindowsException();
     }
 
-    public static List<Window> all() {
-        List<Window> windows = new ArrayList<>();
+    public static List<WindowsWindow> all() {
+        List<WindowsWindow> windows = new ArrayList<>();
         enumerate(windows::add);
         return windows;
     }
@@ -63,8 +70,8 @@ public class Window {
      * @param predicate The predicate to test each window with.
      * @return A list of all windows that match the predicate.
      */
-    public static List<Window> collect(Predicate<Window> predicate) {
-        List<Window> windows = new ArrayList<>();
+    public static List<WindowsWindow> collect(Predicate<? super WindowsWindow> predicate) {
+        List<WindowsWindow> windows = new ArrayList<>();
 
         enumerate(w -> {
             if (predicate.test(w)) {
@@ -117,19 +124,19 @@ public class Window {
     /**
      * Gets the rectangle of the window.
      */
-    public RECT getRect() {
-        WINDOWINFO info = getInfo();
-        return info.rcWindow;
+    public Rect getRect() {
+        return toRect(getInfo().rcWindow);
     }
 
     @Override
     public String toString() {
-        RECT rect = getRect();
+        Rect rect = getRect();
 
-        int width = rect.right - rect.left;
-        int height = rect.bottom - rect.top;
+        int width = rect.width();
+        int height = rect.height();
 
-        return String.format("Window[title=%s, pos=%sx%s, dim=%sx%s]", getTitle(), rect.left, rect.top, width, height);
+        return String.format("Window[title=%s, pos=%sx%s, dim=%sx%s]", getTitle(), rect.left(), rect.top(), width,
+                height);
     }
 
     /**
@@ -258,8 +265,8 @@ public class Window {
 
     public void maximizeTo(Monitor m) {
         setForeground();
-        RECT rect = m.getWorkArea();
-        move(rect.left, rect.top);
+        Rect rect = m.getWorkArea();
+        move(rect.left(), rect.top());
         maximize();
     }
 }

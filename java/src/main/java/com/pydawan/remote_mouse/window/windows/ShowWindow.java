@@ -1,4 +1,4 @@
-package com.pydawan.remote_mouse.winuser;
+package com.pydawan.remote_mouse.window.windows;
 
 class ShowWindow {
     public static final int SW_HIDE = 0;

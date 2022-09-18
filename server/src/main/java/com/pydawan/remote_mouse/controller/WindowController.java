@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pydawan.winuser.Window;
+import com.pydawan.remote_mouse.winuser.Window;
 import com.sun.jna.platform.win32.WinDef.RECT;
 
 @RestController()
