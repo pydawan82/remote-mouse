@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 
 import lombok.Getter;
 
-import com.pydawan.remote_mouse.exception.WindowsException;
+import com.pydawan.remote_mouse.exception.LastError;
 import com.pydawan.remote_mouse.jni.windows.WindowLib;
 import com.pydawan.remote_mouse.monitor.Monitor;
 import com.pydawan.remote_mouse.util.Rect;
@@ -55,7 +55,7 @@ public class WindowsWindow implements Window {
 
         boolean result = WindowLib.INSTANCE.EnumWindows(fn, new LPARAM());
         if (!result)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     public static List<WindowsWindow> all() {
@@ -102,7 +102,7 @@ public class WindowsWindow implements Window {
         char[] buffer = new char[length + 1];
         int result = WindowLib.INSTANCE.GetWindowTextW(hWnd, buffer, length + 1);
         if (result == 0)
-            throw new WindowsException();
+            LastError.throwLastError();
 
         return new String(buffer);
     }
@@ -116,7 +116,7 @@ public class WindowsWindow implements Window {
         WINDOWINFO info = new WINDOWINFO();
         boolean result = WindowLib.INSTANCE.GetWindowInfo(hWnd, info);
         if (!result)
-            throw new WindowsException();
+            LastError.throwLastError();
 
         return info;
     }
@@ -174,7 +174,7 @@ public class WindowsWindow implements Window {
     public void setForeground() {
         boolean result = WindowLib.INSTANCE.SetForegroundWindow(hWnd);
         if (!result)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     /**
@@ -183,7 +183,7 @@ public class WindowsWindow implements Window {
     public void maximize() {
         boolean result = WindowLib.INSTANCE.ShowWindow(hWnd, ShowWindow.SW_MAXIMIZE);
         if (!result)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     /**
@@ -192,7 +192,7 @@ public class WindowsWindow implements Window {
     public void minimize() {
         boolean result = WindowLib.INSTANCE.ShowWindow(hWnd, ShowWindow.SW_MINIMIZE);
         if (!result)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     /**
@@ -201,7 +201,7 @@ public class WindowsWindow implements Window {
     public void restore() {
         boolean result = WindowLib.INSTANCE.ShowWindow(hWnd, ShowWindow.SW_RESTORE);
         if (!result)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     /**
@@ -210,7 +210,7 @@ public class WindowsWindow implements Window {
     public void close() {
         boolean result = WindowLib.INSTANCE.PostMessageW(hWnd, WindowMessages.WM_CLOSE, new WPARAM(), new LPARAM());
         if (!result)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     /**
@@ -222,7 +222,7 @@ public class WindowsWindow implements Window {
         boolean result = WindowLib.INSTANCE.PostMessageW(hWnd, WindowMessages.WM_KEYDOWN, new WPARAM(key.getValue()),
                 new LPARAM());
         if (!result)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     /**
@@ -235,32 +235,32 @@ public class WindowsWindow implements Window {
         boolean result = WindowLib.INSTANCE.PostMessageW(hWnd, WindowMessages.WM_KEYUP, new WPARAM(key.getValue()),
                 new LPARAM());
         if (!result)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     public void sendKey(VirtualKey key, int repeat) {
         boolean result = WindowLib.INSTANCE.PostMessageW(hWnd, WindowMessages.WM_KEYDOWN, new WPARAM(key.getValue()),
                 new LPARAM(repeat));
         if (!result)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     public void move(int x, int y) {
         boolean result = WindowLib.INSTANCE.SetWindowPos(hWnd, hWnd, x, y, 0, 0, 0x5);
         if (!result)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     public void resize(int width, int height) {
         boolean result = WindowLib.INSTANCE.SetWindowPos(hWnd, hWnd, 0, 0, width, height, 0x6);
         if (!result)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     public void moveAndResize(int x, int y, int width, int height) {
         boolean result = WindowLib.INSTANCE.SetWindowPos(hWnd, hWnd, x, y, width, height, 0x4);
         if (!result)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     public void maximizeTo(Monitor m) {

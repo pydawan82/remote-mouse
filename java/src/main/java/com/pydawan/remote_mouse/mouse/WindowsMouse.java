@@ -5,7 +5,7 @@ import com.sun.jna.platform.win32.WinUser.MOUSEINPUT;
 
 import static com.pydawan.remote_mouse.mouse.MouseEventFlag.*;
 
-import com.pydawan.remote_mouse.exception.WindowsException;
+import com.pydawan.remote_mouse.exception.LastError;
 import com.pydawan.remote_mouse.jni.windows.InputLib;
 
 class WindowsMouse implements Mouse {
@@ -32,7 +32,7 @@ class WindowsMouse implements Mouse {
 
         int result = InputLib.INSTANCE.SendInput(1, input, input.size());
         if (result != 1)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     public void setPos(int x, int y) {
@@ -45,7 +45,7 @@ class WindowsMouse implements Mouse {
 
         int result = InputLib.INSTANCE.SendInput(1, input, input.size());
         if (result != 1)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     public void press(MouseButton button) {
@@ -56,7 +56,7 @@ class WindowsMouse implements Mouse {
 
         int result = InputLib.INSTANCE.SendInput(1, input, input.size());
         if (result != 1)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     public void release(MouseButton button) {
@@ -67,7 +67,7 @@ class WindowsMouse implements Mouse {
 
         int result = InputLib.INSTANCE.SendInput(1, input, input.size());
         if (result != 1)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     public void click(MouseButton button) {
@@ -78,7 +78,7 @@ class WindowsMouse implements Mouse {
 
         int result = InputLib.INSTANCE.SendInput(2, inputs, inputs[0].size());
         if (result != 2)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     public void scroll(int dx, int dy) {
@@ -91,6 +91,6 @@ class WindowsMouse implements Mouse {
 
         int result = InputLib.INSTANCE.SendInput(1, input, input.size());
         if (result != 1)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 }

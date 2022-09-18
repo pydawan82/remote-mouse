@@ -3,7 +3,7 @@ package com.pydawan.remote_mouse.monitor;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pydawan.remote_mouse.exception.WindowsException;
+import com.pydawan.remote_mouse.exception.LastError;
 import com.pydawan.remote_mouse.jni.windows.MonitorLib;
 import com.pydawan.remote_mouse.util.Rect;
 import com.sun.jna.Pointer;
@@ -44,7 +44,8 @@ public class WindowsMonitor implements Monitor {
         info.cbSize = info.size();
         boolean result = MonitorLib.INSTANCE.GetMonitorInfoW(hMonitor, info);
         if (!result)
-            throw new WindowsException();
+            LastError.throwLastError();
+
         return info;
     }
 

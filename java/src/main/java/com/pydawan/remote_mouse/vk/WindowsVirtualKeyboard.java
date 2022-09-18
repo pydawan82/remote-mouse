@@ -1,6 +1,6 @@
 package com.pydawan.remote_mouse.vk;
 
-import com.pydawan.remote_mouse.exception.WindowsException;
+import com.pydawan.remote_mouse.exception.LastError;
 import com.pydawan.remote_mouse.jni.windows.InputLib;
 import com.sun.jna.platform.win32.WinUser.INPUT;
 import com.sun.jna.platform.win32.WinUser.KEYBDINPUT;
@@ -30,7 +30,7 @@ class WindowsVirtualKeyboard implements VirtualKeyboard {
                 input.size());
 
         if (result != 1)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     public void sendKeyUp(VirtualKey key) {
@@ -39,7 +39,7 @@ class WindowsVirtualKeyboard implements VirtualKeyboard {
 
         int result = InputLib.INSTANCE.SendInput(1, (INPUT[]) input.toArray(1), input.size());
         if (result != 1)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     public void pressKeys(VirtualKey... keys) {
@@ -62,7 +62,7 @@ class WindowsVirtualKeyboard implements VirtualKeyboard {
         int result = InputLib.INSTANCE.SendInput(inputs.length, inputs,
                 inputs[0].size());
         if (result != inputs.length)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 
     public void pressKeyCombo(VirtualKey... keys) {
@@ -85,6 +85,6 @@ class WindowsVirtualKeyboard implements VirtualKeyboard {
         int result = InputLib.INSTANCE.SendInput(inputs.length, inputs, inputs[0].size());
         result = inputs.length;
         if (result != inputs.length)
-            throw new WindowsException();
+            LastError.throwLastError();
     }
 }
