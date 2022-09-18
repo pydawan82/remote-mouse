@@ -1,7 +1,7 @@
-package com.pydawan;
+package com.pydawan.remote_mouse;
 
-import com.pydawan.mouse.Mouse;
-import com.pydawan.mouse.MouseButton;
+import com.pydawan.remote_mouse.mouse.Mouse;
+import com.pydawan.remote_mouse.mouse.MouseButton;
 
 /**
  * Hello world!

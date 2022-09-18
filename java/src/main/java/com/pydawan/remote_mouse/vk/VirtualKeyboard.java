@@ -1,12 +1,11 @@
-package com.pydawan.vk;
+package com.pydawan.remote_mouse.vk;
 
+import com.pydawan.remote_mouse.exception.WindowsException;
+import com.pydawan.remote_mouse.jni.InputLib;
 import com.sun.jna.platform.win32.WinUser.INPUT;
 import com.sun.jna.platform.win32.WinUser.KEYBDINPUT;
 
 import lombok.NonNull;
-
-import com.pydawan.exception.WindowsException;
-import com.pydawan.jni.InputLib;
 
 public class VirtualKeyboard {
 

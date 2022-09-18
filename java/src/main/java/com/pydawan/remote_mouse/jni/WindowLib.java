@@ -1,4 +1,4 @@
-package com.pydawan.jni;
+package com.pydawan.remote_mouse.jni;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;

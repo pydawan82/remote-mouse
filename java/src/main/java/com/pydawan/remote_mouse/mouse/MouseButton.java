@@ -1,11 +1,11 @@
-package com.pydawan.mouse;
+package com.pydawan.remote_mouse.mouse;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import com.sun.jna.platform.win32.WinUser.MOUSEINPUT;
 
-import static com.pydawan.mouse.MouseEventFlag.*;
+import static com.pydawan.remote_mouse.mouse.MouseEventFlag.*;
 
 @Getter
 @AllArgsConstructor

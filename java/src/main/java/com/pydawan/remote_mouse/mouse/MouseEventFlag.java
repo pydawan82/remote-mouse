@@ -1,4 +1,4 @@
-package com.pydawan.mouse;
+package com.pydawan.remote_mouse.mouse;
 
 import lombok.Getter;
 

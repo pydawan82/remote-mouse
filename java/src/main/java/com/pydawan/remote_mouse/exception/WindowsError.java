@@ -1,4 +1,4 @@
-package com.pydawan.exception;
+package com.pydawan.remote_mouse.exception;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;

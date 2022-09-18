@@ -1,7 +1,7 @@
-package com.pydawan.winuser;
+package com.pydawan.remote_mouse.winuser;
 
-import com.pydawan.vk.VirtualKey;
-import com.pydawan.vk.VirtualKeyboard;
+import com.pydawan.remote_mouse.vk.VirtualKey;
+import com.pydawan.remote_mouse.vk.VirtualKeyboard;
 
 public class Shortcut {
     private Shortcut() {

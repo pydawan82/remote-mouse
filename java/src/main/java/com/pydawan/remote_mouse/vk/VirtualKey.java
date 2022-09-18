@@ -1,4 +1,4 @@
-package com.pydawan.vk;
+package com.pydawan.remote_mouse.vk;
 
 import lombok.Getter;
 

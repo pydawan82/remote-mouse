@@ -1,4 +1,4 @@
-package com.pydawan.exception;
+package com.pydawan.remote_mouse.exception;
 
 public class WindowsException extends RuntimeException {
 

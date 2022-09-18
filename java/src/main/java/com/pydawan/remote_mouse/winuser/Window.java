@@ -1,4 +1,4 @@
-package com.pydawan.winuser;
+package com.pydawan.remote_mouse.winuser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,9 @@ import java.util.function.Predicate;
 
 import lombok.Getter;
 
+import com.pydawan.remote_mouse.exception.WindowsException;
+import com.pydawan.remote_mouse.jni.WindowLib;
+import com.pydawan.remote_mouse.vk.VirtualKey;
 import com.sun.jna.Pointer;
 
 import com.sun.jna.platform.win32.WinDef.LPARAM;
@@ -15,9 +18,6 @@ import com.sun.jna.platform.win32.WinDef.RECT;
 
 import com.sun.jna.platform.win32.WinUser.WNDENUMPROC;
 import com.sun.jna.platform.win32.WinUser.WINDOWINFO;
-import com.pydawan.exception.WindowsException;
-import com.pydawan.jni.WindowLib;
-import com.pydawan.vk.VirtualKey;
 
 public class Window {
 

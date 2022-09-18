@@ -1,12 +1,12 @@
-package com.pydawan.mouse;
+package com.pydawan.remote_mouse.mouse;
 
 import com.sun.jna.platform.win32.WinUser.INPUT;
 import com.sun.jna.platform.win32.WinUser.MOUSEINPUT;
 
-import static com.pydawan.mouse.MouseEventFlag.*;
+import static com.pydawan.remote_mouse.mouse.MouseEventFlag.*;
 
-import com.pydawan.exception.WindowsException;
-import com.pydawan.jni.InputLib;
+import com.pydawan.remote_mouse.exception.WindowsException;
+import com.pydawan.remote_mouse.jni.InputLib;
 
 public class Mouse {
 

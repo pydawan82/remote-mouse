@@ -1,10 +1,10 @@
-package com.pydawan.winuser;
+package com.pydawan.remote_mouse.winuser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.pydawan.exception.WindowsException;
-import com.pydawan.jni.MonitorLib;
+import com.pydawan.remote_mouse.exception.WindowsException;
+import com.pydawan.remote_mouse.jni.MonitorLib;
 import com.sun.jna.Pointer;
 
 import com.sun.jna.platform.win32.WinDef.LPARAM;
