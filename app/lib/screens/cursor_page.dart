@@ -1,9 +1,13 @@
 import 'package:app/models/button.dart';
-import 'package:flutter/gestures.dart';
+import 'package:app/models/mouse.dart';
+import 'package:app/services/MouseService.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CursorPage extends StatelessWidget {
   static const _button_height = 50.0;
+
+  final Mouse mouse = Mouse();
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +68,7 @@ class CursorPage extends StatelessWidget {
   }
 
   void _mouseMove(DragUpdateDetails details) {
-    print(details);
+    mouse.move(details.delta);
   }
 
   void _mouseDown(Button button) {
@@ -76,6 +80,6 @@ class CursorPage extends StatelessWidget {
   }
 
   void _mouseClick(Button button) {
-    print('Mouse click $button');
+    //_mouseService.click(button);
   }
 }

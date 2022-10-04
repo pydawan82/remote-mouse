@@ -1,8 +1,30 @@
+import 'package:app/http/authorization.dart';
+import 'package:app/http/http_service.dart';
 import 'package:app/screens/cursor_page.dart';
+import 'package:app/services/KeyboardService.dart';
+import 'package:app/services/MouseService.dart';
+import 'package:app/services/log_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 void main() {
+  _registerServices();
   runApp(const MyApp());
+}
+
+void _registerServices() {
+  Get.put(
+    HttpService(
+      Uri.parse('http://192.168.1.23:8080'),
+      CookieAndBasicAuthentication(
+        username: 'david',
+        password: 'zeushera',
+      ),
+    ),
+  );
+  Get.put(MouseService());
+  Get.put(KeyboardService());
+  Get.put(LogService());
 }
 
 class MyApp extends StatelessWidget {
