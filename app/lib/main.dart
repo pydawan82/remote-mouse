@@ -1,11 +1,13 @@
 import 'package:app/http/authorization.dart';
 import 'package:app/http/http_service.dart';
 import 'package:app/screens/cursor_page.dart';
-import 'package:app/services/KeyboardService.dart';
-import 'package:app/services/MouseService.dart';
+import 'package:app/services/keyboard_service.dart';
+import 'package:app/services/mouse_service.dart';
 import 'package:app/services/log_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'services/event_pipe_service.dart';
 
 void main() {
   _registerServices();
@@ -25,6 +27,7 @@ void _registerServices() {
   Get.put(MouseService());
   Get.put(KeyboardService());
   Get.put(LogService());
+  Get.put(EventPipeService());
 }
 
 class MyApp extends StatelessWidget {

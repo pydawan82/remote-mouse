@@ -1,6 +1,5 @@
 package com.pydawan.remote_mouse.security;
 
-import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
