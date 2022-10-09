@@ -3,7 +3,7 @@ package com.pydawan.remote_mouse.service;
 import org.springframework.stereotype.Service;
 
 import com.pydawan.remote_mouse.model.Button;
-import com.pydawan.remote_mouse.model.Offset;
+import com.pydawan.remote_mouse.model.Delta;
 import com.pydawan.remote_mouse.mouse.Mouse;
 import com.pydawan.remote_mouse.mouse.MouseButton;
 
@@ -31,7 +31,11 @@ public class MouseService {
         mouse.click(mbutton);
     }
 
-    public void scroll(Offset offset) {
-        mouse.scroll(offset.getX(), offset.getY());
+    public void scroll(Delta offset) {
+        mouse.scroll(offset.getDelta());
+    }
+
+    public void hscroll(Delta offset) {
+        mouse.hscroll(offset.getDelta());
     }
 }

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +31,7 @@ public class EventPipe {
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private Future<?> future;
+    private Socket socket;
     private Scanner in;
 
     private final Mouse mouse = Mouse.getInstance();
@@ -55,34 +55,63 @@ public class EventPipe {
     private EventPipe(ServerSocket socket, byte[] key) {
         this();
 
-        executor.submit(() -> waitForConnection(socket, key));
+        executor.submit(() -> this.runWithSocket(socket, key));
     }
 
-    private void waitForConnection(ServerSocket socket, byte[] key) {
+    private void runWithSocket(ServerSocket socket, byte[] key) {
+        waitForConnection(socket, key);
+        listen();
         try {
-            socket.setSoTimeout(TIMEOUT);
-        } catch (SocketException e1) {
+            close();
+        } catch (Exception e) {
+            // Do nothing
         }
+    }
 
-        long startTime = System.currentTimeMillis();
+    private void waitForConnection(ServerSocket server, byte[] key) {
+        try {
+            waitForConnection_(server, key);
+        } catch (IOException e) {
+            // Do nothing
+        }
+    }
 
-        while (System.currentTimeMillis() - startTime < MAX_WAIT_TIME) {
-            try {
-                Socket s = socket.accept();
-                s.setSoTimeout(TIMEOUT);
-                InputStream in = s.getInputStream();
-                byte[] givenKey = in.readNBytes(KEY_LENGTH);
-                if (!Arrays.equals(key, givenKey))
-                    continue;
+    private void waitForConnection_(ServerSocket server, byte[] key) throws IOException {
+        try {
+            server.setSoTimeout(TIMEOUT);
 
-                this.in = new Scanner(in);
-                s.setSoTimeout(0);
-                executor.submit(this::listen);
-                break;
-            } catch (IOException e) {
-                continue;
+            long startTime = System.currentTimeMillis();
+
+            while (System.currentTimeMillis() - startTime < MAX_WAIT_TIME) {
+                if (handleConnection(server.accept(), key))
+                    break;
             }
+
+        } finally {
+            server.close();
         }
+    }
+
+    private boolean handleConnection(Socket socket, byte[] key) throws IOException {
+        socket.setSoTimeout(TIMEOUT);
+        InputStream in = socket.getInputStream();
+        byte[] givenKey;
+        try {
+            givenKey = in.readNBytes(KEY_LENGTH);
+        } catch (IOException e) {
+            return false;
+        }
+
+        if (!Arrays.equals(key, givenKey)) {
+            socket.close();
+            return false;
+        }
+
+        this.in = new Scanner(in);
+        this.socket = socket;
+        socket.setSoTimeout(0);
+
+        return true;
     }
 
     private static ServerSocket tryOpenServer(Supplier<Short> portSupplier) {
@@ -135,15 +164,7 @@ public class EventPipe {
     }
 
     private void handleEvents() {
-        while (true) {
-            try {
-                String event = in.nextLine();
-                handleEvent(event);
-            } catch (NoSuchElementException | IllegalStateException e) {
-                break;
-            } catch (Exception e) {
-            }
-        }
+        in.forEachRemaining(this::handleEvent);
     }
 
     private void handleEvent(String event) {
@@ -158,16 +179,21 @@ public class EventPipe {
         InputEvent inputEvent = parsedEvent.getValue0();
         String[] args = parsedEvent.getValue1();
 
-        Consumer<String[]> consumer = switch (inputEvent) {
+        Consumer<String[]> consumer = eventHandler(inputEvent);
+
+        consumer.accept(args);
+    }
+
+    private Consumer<String[]> eventHandler(InputEvent event) {
+        return switch (event) {
             case MOUSE_MOVE -> this::handleMouseMove;
             case MOUSE_CLICK -> this::handleMouseClick;
             case MOUSE_SCROLL -> this::handleMouseScroll;
+            case MOUSE_HSCROLL -> this::handleMouseHScroll;
             case KEY_PRESS -> this::handleKeyPress;
             case KEY_RELEASE -> this::handleKeyRelease;
             case KEY_TYPE -> this::handleKeyType;
         };
-
-        consumer.accept(args);
     }
 
     private void assertArgCount(String[] args, int count) {
@@ -194,12 +220,19 @@ public class EventPipe {
     }
 
     private void handleMouseScroll(String... args) {
-        assertArgCount(args, 2);
+        assertArgCount(args, 1);
 
-        int x = Integer.parseInt(args[0]);
-        int y = Integer.parseInt(args[1]);
+        int amount = Integer.parseInt(args[0]);
 
-        mouse.scroll(x, y);
+        mouse.scroll(amount);
+    }
+
+    private void handleMouseHScroll(String... args) {
+        assertArgCount(args, 1);
+
+        int amount = Integer.parseInt(args[0]);
+
+        mouse.hscroll(amount);
     }
 
     private void handleKeyPress(String... args) {
@@ -227,5 +260,10 @@ public class EventPipe {
         VirtualKey vk = keyMap.get(keyCode);
 
         keyboard.pressKeys(vk);
+    }
+
+    public void close() throws Exception {
+        if (socket != null)
+            socket.close();
     }
 }

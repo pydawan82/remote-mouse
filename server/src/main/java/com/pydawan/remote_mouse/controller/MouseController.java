@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.pydawan.remote_mouse.model.Button;
+import com.pydawan.remote_mouse.model.Delta;
 import com.pydawan.remote_mouse.model.Offset;
 import com.pydawan.remote_mouse.service.MouseService;
 
@@ -40,8 +41,13 @@ public class MouseController {
     }
 
     @PostMapping("/scroll")
-    public void scroll(@RequestBody Offset offset) {
-        mouseService.scroll(offset);
+    public void scroll(@RequestBody Delta delta) {
+        mouseService.scroll(delta);
+    }
+
+    @PostMapping("/hscroll")
+    public void hscroll(@RequestBody Delta delta) {
+        mouseService.hscroll(delta);
     }
 
 }
