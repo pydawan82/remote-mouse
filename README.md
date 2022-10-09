@@ -43,6 +43,12 @@ TBD
 
 Probably a generated key shared with QR code or text
 
+EventPipe
+---------
+
+A direct socket connection for faster event streaming than using the rest API.
+The connection is started from a call to the API returning a port and a passphrase.
+
 Phone app
 ---------
 
