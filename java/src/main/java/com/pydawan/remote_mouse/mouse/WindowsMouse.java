@@ -71,23 +71,28 @@ class WindowsMouse implements Mouse {
     }
 
     public void click(MouseButton button) {
-        INPUT[] inputs = getInputArray(2);
-
-        MouseButton.setDownEvent(inputs[0].input.mi, button);
-        MouseButton.setUpEvent(inputs[1].input.mi, button);
-
-        int result = InputLib.INSTANCE.SendInput(2, inputs, inputs[0].size());
-        if (result != 2)
-            LastError.throwLastError();
+        press(button);
+        release(button);
     }
 
-    public void scroll(int dx, int dy) {
+    public void scroll(int dy) {
         INPUT input = setMouseInput(new INPUT());
         MOUSEINPUT mi = input.input.mi;
 
-        mi.dx.setValue(dx);
-        mi.dy.setValue(dy);
-        mi.dwFlags.setValue(getFlags(WHEEL, HWHEEL));
+        mi.mouseData.setValue(dy);
+        mi.dwFlags.setValue(WHEEL.getValue());
+
+        int result = InputLib.INSTANCE.SendInput(1, input, input.size());
+        if (result != 1)
+            LastError.throwLastError();
+    }
+
+    public void hscroll(int dx) {
+        INPUT input = setMouseInput(new INPUT());
+        MOUSEINPUT mi = input.input.mi;
+
+        mi.mouseData.setValue(dx);
+        mi.dwFlags.setValue(HWHEEL.getValue());
 
         int result = InputLib.INSTANCE.SendInput(1, input, input.size());
         if (result != 1)

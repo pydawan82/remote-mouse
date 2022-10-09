@@ -14,7 +14,9 @@ public interface Mouse {
 
     public void click(MouseButton button);
 
-    public void scroll(int dx, int dy);
+    public void scroll(int dy);
+
+    public void hscroll(int dx);
 
     public static Mouse getInstance() {
         return switch (Platform.getOSType()) {
